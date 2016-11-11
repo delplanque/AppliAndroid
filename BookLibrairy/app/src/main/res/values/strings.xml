@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BookLibrairy</string>
+    <string name="edit_message_author">Author</string>
+    <string name="edit_message_title">Tile book</string>
+    <string name="edit_message_isbn">isbn</string>
+    <string name="button_create">ADD Book</string>
+</resources>
