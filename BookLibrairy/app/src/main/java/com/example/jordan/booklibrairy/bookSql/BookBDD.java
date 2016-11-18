@@ -1,10 +1,13 @@
-package com.example.jordan.booklibrairy;
+package com.example.jordan.booklibrairy.bookSql;
 
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.example.jordan.booklibrairy.book.Book;
+import com.example.jordan.booklibrairy.bookSql.MaBaseSQLite;
 
 import java.util.ArrayList;
 
@@ -14,6 +17,9 @@ public class BookBDD {
     private static final String NOM_BDD = "librairy.db";
 
     private static final String TABLE_LIVRES = "table_livres";
+    private static final String TABLE_AUTEURS = "table_auteurs";
+    private static final String TABLE_ASSO_AUTEUR_LIVRES = "table_asso_auteur_livre";
+
     private static final String COL_ID = "ID";
     private static final int NUM_COL_ID = 0;
     private static final String COL_ISBN = "ISBN";

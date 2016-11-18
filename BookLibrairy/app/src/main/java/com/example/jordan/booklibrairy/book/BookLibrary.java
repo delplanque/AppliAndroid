@@ -1,13 +1,7 @@
-package com.example.jordan.booklibrairy;
-
-import android.content.Context;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+package com.example.jordan.booklibrairy.book;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BookLibrary {
     protected List<Book> lBooks;

@@ -1,19 +1,24 @@
-package com.example.jordan.booklibrairy;
+package com.example.jordan.booklibrairy.book;
 
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Book {
+    //protected ArrayList<String> author=new ArrayList<>();
     protected String author;
     protected String title;
     protected String isbn;
     protected String resume;
-
+   /* protected String serie;
+    protected String genre;
+    protected String editeur;
+    protected String annee;*/
 
     public Book(String author, String title, String isbn) {
         super();
@@ -28,9 +33,7 @@ public class Book {
         return this.author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+
 
     public String getTitle() {
         return this.title;

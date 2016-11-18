@@ -35,12 +35,6 @@
         android:measureWithLargestChild="false"
         android:nestedScrollingEnabled="false">
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="121dp"
-            android:layout_height="wrap_content"
-            android:text="actualiser bibliotheque"
-            android:onClick="Refresh" />
 
         <ListView
             android:id="@+id/booklist"

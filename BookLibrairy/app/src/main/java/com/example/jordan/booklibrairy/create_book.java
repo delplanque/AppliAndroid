@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.jordan.booklibrairy.book.Book;
+import com.example.jordan.booklibrairy.bookSql.BookBDD;
 
 public class create_book extends AppCompatActivity {
 
@@ -82,5 +84,6 @@ public class create_book extends AppCompatActivity {
         finish() ;
 
     }
+
 
 }
