@@ -4,4 +4,12 @@
     <string name="edit_message_title">Tile book</string>
     <string name="edit_message_isbn">isbn</string>
     <string name="button_create">ADD Book</string>
+    <string name="scan">Scan</string>
+    <string name="action_new">New</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

@@ -17,8 +17,6 @@ public class BookBDD {
     private static final String NOM_BDD = "librairy.db";
 
     private static final String TABLE_LIVRES = "table_livres";
-    private static final String TABLE_AUTEURS = "table_auteurs";
-    private static final String TABLE_ASSO_AUTEUR_LIVRES = "table_asso_auteur_livre";
 
     private static final String COL_ID = "ID";
     private static final int NUM_COL_ID = 0;
@@ -59,6 +57,7 @@ public class BookBDD {
         values.put(COL_ISBN, livre.getIsbn());
         values.put(COL_TITRE, livre.getTitle());
         values.put(COL_AUTEUR, livre.getAuthor());
+
         //on insère l'objet dans la BDD via le ContentValues
         return bdd.insert(TABLE_LIVRES, null, values);
     }

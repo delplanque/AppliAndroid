@@ -11,7 +11,8 @@ import org.json.JSONObject;
 
 public class Book {
     //protected ArrayList<String> author=new ArrayList<>();
-    protected String author;
+    //protected ArrayList<String> lAuthor;
+    protected String Author;
     protected String title;
     protected String isbn;
     protected String resume;
@@ -22,7 +23,7 @@ public class Book {
 
     public Book(String author, String title, String isbn) {
         super();
-        this.author=author;
+        this.Author=author;
         this.title=title;
         this.isbn=isbn;
         this.resume="voici le resume du livre";  //sera initialiser par la suite
@@ -30,7 +31,7 @@ public class Book {
 
     public String getResume(){ return this.resume; }
     public String getAuthor(){
-        return this.author;
+        return this.Author;
     }
 
 
