@@ -7,9 +7,15 @@
     <string name="scan">Scan</string>
     <string name="action_new">New</string>
     <string name="title_activity_main2">Main2Activity</string>
-
+    <string name="titre">Titre du livre</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="ajouter">Ajouter</string>
     <string name="action_settings">Settings</string>
+    <string name="couverture">couverture</string>
+    <string name="ajoutAuteur">Ajouter un Auteur</string>
+    <string name="retour">Retour</string>
+    <string name="info">Appuyez sur le livre pour prendre en photo la couverture de votre livre.</string>
+    <string name="nom_auteur">Nom de l\'auteur</string>
+    <string name="prenom_auteur">Prénom de l\'auteur</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.jordan.booklibrairy;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +29,7 @@ import com.android.volley.toolbox.*;
 import com.android.volley.*;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +42,8 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    String JsonIsbn = "0061234001";
+
+    String JsonIsbn = "9783161484100";
 
     String JsonURL = "https://www.googleapis.com/books/v1/volumes?q=isbn:"+JsonIsbn;
     // This string will hold the results
@@ -85,6 +88,13 @@ public class MainActivity extends AppCompatActivity {
                                    String author = authors.getString(i);
                                }
                            }
+
+                            Context context = getApplicationContext();
+                            CharSequence text = data;
+                            int duration = Toast.LENGTH_SHORT;
+
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
 
                         /*    for (int i = 0; i < volumeinfo.length(); i++) {
                                 array.getString(i);
@@ -291,9 +301,10 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         switch(id) {
             case R.id.action_scan :
-               new IntentIntegrator(this).initiateScan();
-
+                IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+                scanIntegrator.initiateScan();
                 break;
+
             default:
         }
 
@@ -311,18 +322,60 @@ public class MainActivity extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanningResult != null) {
-            String scanContent = scanningResult.getContents();
-            String scanFormat = scanningResult.getFormatName();
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "ScanContent :"+scanContent, Toast.LENGTH_SHORT);
-            toast.show();
 
+        String isbn = "";
+        String type = "";
+        String prefix ="";
+        if (scanningResult != null) {
+            isbn = scanningResult.getContents().toLowerCase();
+            type = scanningResult.getFormatName().toLowerCase();
+            prefix = isbn.substring(0, 3);
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "No scan data received!", Toast.LENGTH_SHORT);
+                    "Aucunes données scannées", Toast.LENGTH_SHORT);
             toast.show();
+        }
+
+        if(!type.equals("ean_13"))
+        {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Mauvais format", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+        if(!(prefix.equals("977") || prefix.equals("978") || prefix.equals("979")))
+        {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "C'est n'est pas un livre !", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        else
+        {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Code Ok", Toast.LENGTH_SHORT);
+            toast.show();
+
+           // GestionLivre gl = new GestionLivre(this);
+           // Livre trouvaille = gl.getLivre(ean);
+            Intent intention;
+            Toast toast1;
+          //  if(trouvaille != null)
+          //  {
+          //      intention = new Intent(this, AfficherLivre.class);
+          //      intention.putExtra("livre", trouvaille);
+          //      toast1 = Toast.makeText(this, "Ce livre est déjà dans votre bibliothèque.", Toast.LENGTH_LONG);
+          //      toast1.show();
+          //  }
+          //  else {
+                intention = new Intent(this, Enregistrer.class);
+                intention.putExtra("isbn", isbn);
+                toast1 = Toast.makeText(this, "Ce livre n'est pas dans votre bibliothèque, enregistrez le !", Toast.LENGTH_LONG);
+                toast1.show();
+
+          //  }
+
+            startActivity(intention);
         }
     }
 }
