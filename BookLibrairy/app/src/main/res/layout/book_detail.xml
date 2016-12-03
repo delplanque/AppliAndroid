@@ -25,6 +25,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textSize="16dp"
+            android:textColor="@color/colorblank"
             android:textStyle="bold"/>
 
 
@@ -32,12 +33,14 @@
             android:id="@+id/title"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:textColor="@color/colorblank"
             />
 
         <TextView
             android:id="@+id/isbn"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:textColor="@color/colorblank"
             />
 
 

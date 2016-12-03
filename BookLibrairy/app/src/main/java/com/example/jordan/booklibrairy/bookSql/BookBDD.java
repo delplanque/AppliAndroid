@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.jordan.booklibrairy.book.Book;
+import com.example.jordan.booklibrairy.book.Auteur;
 import com.example.jordan.booklibrairy.bookSql.MaBaseSQLite;
 
 import java.util.ArrayList;

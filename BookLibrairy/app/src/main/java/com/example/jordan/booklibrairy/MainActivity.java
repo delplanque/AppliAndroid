@@ -20,13 +20,16 @@ import android.widget.Toast;
 
 import com.android.volley.*;
 import com.android.volley.toolbox.Volley;
+import com.example.jordan.booklibrairy.book.Auteur;
 import com.example.jordan.booklibrairy.book.Book;
+import com.example.jordan.booklibrairy.book.Livre;
 import com.example.jordan.booklibrairy.bookSql.BookBDD;
 import com.example.jordan.booklibrairy.book.BookLibrary;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.android.volley.toolbox.*;
 import com.android.volley.*;
+import com.example.jordan.booklibrairy.bookSql.DatabaseHelper;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -41,7 +44,6 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-
 
     String JsonIsbn = "9783161484100";
 
@@ -145,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
         livreBdd.open();
 
 
+
         ArrayList<Book> allb=livreBdd.getAllBooks();
         for (Book b: allb) {
             books.saveBookInCollection(b);
@@ -153,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
         livreBdd.close();
 
-        List<Map<String, String>> listOfBook = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> listOfBook = new ArrayList<>();
         for(Book book :books.getlBooks()){
             Map<String,String> bookMap=new HashMap<>();
             bookMap.put("img",String.valueOf(R.mipmap.ic_launcher));
@@ -162,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
             bookMap.put("isbn",book.getIsbn());
             listOfBook.add(bookMap);
         }
+
 
 
 
@@ -357,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
 
            // GestionLivre gl = new GestionLivre(this);
-           // Livre trouvaille = gl.getLivre(ean);
+           //  trouvaille = ;
             Intent intention;
             Toast toast1;
           //  if(trouvaille != null)
