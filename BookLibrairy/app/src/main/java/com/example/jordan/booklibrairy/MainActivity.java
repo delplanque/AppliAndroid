@@ -9,11 +9,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -52,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
     String data = "";
     // Defining the Volley request queue that handles the URL request concurrently
     RequestQueue requestQueue;
+    BookLibrary books;
+    ListView bookList;
+    EditText search;
 
     String[] listItemsValue = new String[] {"img","author","title","isbn"};
     @Override
@@ -98,17 +104,6 @@ public class MainActivity extends AppCompatActivity {
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
 
-                        /*    for (int i = 0; i < volumeinfo.length(); i++) {
-                                array.getString(i);
-                                // On récupère un objet JSON du tableau
-                                JSONObject infobook = new JSONObject(array.getString(i));
-
-                                // Adds strings from object to the "data" string
-                                data += "tile : " + infobook.getString("title") +
-                                        "subtitle : " + infobook.getString("subtitle");
-
-
-                            }*/
 
 
                         }
@@ -135,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        final ListView bookList =(ListView) findViewById(R.id.booklist);
-        BookLibrary books= new BookLibrary();
+        bookList =(ListView) findViewById(R.id.booklist);
+        books= new BookLibrary();
 
         final BookBDD livreBdd = new BookBDD(this);
         //Création d'une instance de ma classe LivresBDD
@@ -168,12 +163,35 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+        search = (EditText) findViewById(R.id.search);
 
         SimpleAdapter listAdapter=new SimpleAdapter(this.getBaseContext(),listOfBook,R.layout.book_detail,
                 listItemsValue,
                 new int[] {R.id.img,R.id.author,R.id.title,R.id.isbn});
         bookList.setAdapter(listAdapter);
+
+        search.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+                filtrer();
+            }
+        });
 
 
         bookList.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -381,5 +399,31 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(intention);
         }
+    }
+
+    public void filtrer() {
+        // retourner la chaine saisie par l'utilisateur
+        String name = search.getText().toString();
+        // créer une nouvelle liste qui va contenir la résultat à afficher
+
+        List<Map<String, String>> listOfBook = new ArrayList<>();
+        for(Book book :books.getlBooks()){
+            if (book.getTitle().toLowerCase().startsWith(name)) {
+                Map<String, String> bookMap = new HashMap<>();
+                bookMap.put("img", String.valueOf(R.mipmap.ic_launcher));
+                bookMap.put("author", book.getAuthor());
+                bookMap.put("title", book.getTitle());
+                bookMap.put("isbn", book.getIsbn());
+                listOfBook.add(bookMap);
+            }
+        }
+
+        //vider la liste
+        bookList.setAdapter(null);
+        // ajouter la nouvelle liste
+        SimpleAdapter listAdapter=new SimpleAdapter(this.getBaseContext(),listOfBook,R.layout.book_detail,
+                listItemsValue,
+                new int[] {R.id.img,R.id.author,R.id.title,R.id.isbn});
+        bookList.setAdapter(listAdapter);
     }
 }

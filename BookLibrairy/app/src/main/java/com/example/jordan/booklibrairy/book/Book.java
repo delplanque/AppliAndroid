@@ -16,6 +16,7 @@ public class Book {
     protected String title;
     protected String isbn;
     protected String resume;
+    protected String srcImage;
    /* protected String serie;
     protected String genre;
     protected String editeur;
@@ -29,12 +30,23 @@ public class Book {
         this.resume="voici le resume du livre";  //sera initialiser par la suite
     }
 
+    public Book(String author, String title, String isbn,String srcImage,String resume) {
+        super();
+        this.Author=author;
+        this.title=title;
+        this.isbn=isbn;
+        this.srcImage= srcImage ;
+        this.resume=resume;  //sera initialiser par la suite
+    }
+
     public String getResume(){ return this.resume; }
     public String getAuthor(){
         return this.Author;
     }
 
-
+    public String getSrcImage(){
+        return this.srcImage;
+    }
 
     public String getTitle() {
         return this.title;

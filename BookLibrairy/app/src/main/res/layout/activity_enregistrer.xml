@@ -7,6 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/biblio"
     tools:context="com.example.jordan.booklibrairy.MainActivity">
 
     <EditText
@@ -18,8 +19,22 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="20dp"
         android:layout_below="@+id/ivCouverture"
+        android:textColor="@color/colorblank"
         android:focusable="false"
  />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/idisbn"
+        android:text="@string/edit_message_isbn"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/nom_auteur"
+        android:textColor="@color/colorblank"
+        android:focusable="false"
+        />
 
     <EditText
         android:layout_width="wrap_content"
@@ -30,6 +45,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="20dp"
         android:layout_below="@+id/titre"
+        android:textColor="@color/colorblank"
         android:focusable="false"
   />
 
@@ -42,6 +58,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="20dp"
         android:layout_below="@+id/sortie"
+        android:textColor="@color/colorblank"
         android:focusable="false"
       />
 
@@ -54,6 +71,8 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="20dp"
         android:layout_below="@+id/resume"
+        android:textColor="@color/colorblank"
+
         android:focusable="false" />
 
     <Button
@@ -61,11 +80,10 @@
         android:layout_height="wrap_content"
         android:text="@string/ajouter"
         android:id="@+id/bajouter"
-        android:onClick="onClickAjoutLivre"
         android:layout_marginTop="108dp"
         android:layout_marginLeft="51dp"
         android:layout_marginStart="51dp"
-        android:layout_below="@+id/nom_auteur"
+        android:layout_below="@+id/idisbn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -75,7 +93,6 @@
         android:layout_height="wrap_content"
         android:text="@string/retour"
         android:id="@+id/button2"
-        android:onClick="onClickRetourAccueil"
         android:layout_marginLeft="47dp"
         android:layout_marginStart="47dp"
         android:layout_alignTop="@+id/bajouter"

@@ -12,11 +12,15 @@ public class MaBaseSQLite extends SQLiteOpenHelper {
     private static final String COL_ISBN = "ISBN";
     private static final String COL_TITRE = "Titre";
     private static final String COL_AUTEUR = "Auteur";
+    private static final String COL_RESUME = "Resume";
+    private static final String COL_IMAGE = "Image";
 
     private static final String CREATE_BDD = "CREATE TABLE " + TABLE_LIVRES + " ("
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_ISBN + " TEXT NOT NULL, "
             + COL_TITRE + " TEXT NOT NULL, "
-            + COL_AUTEUR + " TEXT NOT NULL );";
+            + COL_AUTEUR + " TEXT NOT NULL, "
+            + COL_RESUME + " TEXT NOT NULL, "
+            + COL_IMAGE + " TEXT NOT NULL);";
 
     public MaBaseSQLite(Context context, String name, CursorFactory factory, int version) {
         super(context, name, factory, version);

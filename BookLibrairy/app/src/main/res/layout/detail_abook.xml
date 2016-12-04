@@ -9,6 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.jordan.booklibrairy.detail_activity"
+    android:background="@drawable/biblio"
     android:orientation="vertical"
     android:gravity="center">
 
@@ -32,6 +33,7 @@
             android:text="Titre : "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorblank"
             />
 
         <TextView
@@ -39,6 +41,7 @@
             android:text="Auteur : "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorblank"
             />
 
         <TextView
@@ -47,6 +50,7 @@
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorblank"
             />
 
         <TextView
@@ -54,6 +58,7 @@
             android:text="Resume : "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorblank"
             />
 
     </LinearLayout>

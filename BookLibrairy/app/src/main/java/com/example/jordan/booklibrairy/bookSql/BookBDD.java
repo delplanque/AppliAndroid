@@ -27,6 +27,10 @@ public class BookBDD {
     private static final int NUM_COL_TITRE = 2;
     private static final String COL_AUTEUR = "Auteur";
     private static final int NUM_COL_AUTEUR = 3;
+    private static final String COL_RESUME = "Resume";
+    private static final int NUM_COL_RESUME = 4;
+    private static final String COL_IMAGE = "Image";
+    private static final int NUM_COL_IMAGE = 5;
 
     private SQLiteDatabase bdd;
 
@@ -58,6 +62,8 @@ public class BookBDD {
         values.put(COL_ISBN, livre.getIsbn());
         values.put(COL_TITRE, livre.getTitle());
         values.put(COL_AUTEUR, livre.getAuthor());
+        values.put(COL_RESUME, livre.getResume());
+        values.put(COL_IMAGE, livre.getSrcImage());
 
         //on insère l'objet dans la BDD via le ContentValues
         return bdd.insert(TABLE_LIVRES, null, values);
@@ -70,6 +76,8 @@ public class BookBDD {
         values.put(COL_ISBN, livre.getIsbn());
         values.put(COL_TITRE, livre.getTitle());
         values.put(COL_AUTEUR, livre.getAuthor());
+        values.put(COL_RESUME, livre.getResume());
+        values.put(COL_IMAGE, livre.getSrcImage());
         return bdd.update(TABLE_LIVRES, values, COL_ID + " = " +id, null);
     }
 
@@ -80,7 +88,7 @@ public class BookBDD {
 
     public Book getLivreWithTitre(String titre){
         //Récupère dans un Cursor les valeurs correspondant à un livre contenu dans la BDD (ici on sélectionne le livre grâce à son titre)
-        Cursor c = bdd.query(TABLE_LIVRES, new String[] {COL_ID, COL_ISBN, COL_TITRE ,COL_AUTEUR}, COL_TITRE + " LIKE \"" + titre +"\"", null, null, null, null);
+        Cursor c = bdd.query(TABLE_LIVRES, new String[] {COL_ID, COL_ISBN, COL_TITRE ,COL_AUTEUR ,COL_RESUME ,COL_IMAGE}, COL_TITRE + " LIKE \"" + titre +"\"", null, null, null, null);
         return cursorToLivre(c);
     }
 
@@ -91,8 +99,9 @@ public class BookBDD {
             String aut =  c.getString(NUM_COL_AUTEUR);
             String ti  =  c.getString(NUM_COL_TITRE);
             String is  =  c.getString(NUM_COL_ISBN);
-
-            Book b=new Book(aut,ti,is);
+            String res  =  c.getString(NUM_COL_RESUME);
+            String img  =  c.getString(NUM_COL_IMAGE);
+            Book b=new Book(aut,ti,is,img,res);
             Lbooks.add(b);
 
         }
@@ -109,7 +118,7 @@ public class BookBDD {
         //Sinon on se place sur le premier élément
         c.moveToFirst();
         //On créé un livre
-        Book livre = new Book(c.getString(NUM_COL_AUTEUR),c.getString(NUM_COL_TITRE),c.getString(NUM_COL_ISBN));
+        Book livre = new Book(c.getString(NUM_COL_AUTEUR),c.getString(NUM_COL_TITRE),c.getString(NUM_COL_ISBN),c.getString(NUM_COL_IMAGE),c.getString(NUM_COL_RESUME));
         //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
         //On ferme le cursor
         c.close();
