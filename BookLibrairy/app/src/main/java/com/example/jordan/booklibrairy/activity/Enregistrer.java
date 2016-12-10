@@ -55,7 +55,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.jordan.booklibrairy.R;
+import com.example.jordan.booklibrairy.book.Auteur;
 import com.example.jordan.booklibrairy.book.Book;
+import com.example.jordan.booklibrairy.book.ListAuteurs;
+import com.example.jordan.booklibrairy.bookSql.AuteurBDD;
 import com.example.jordan.booklibrairy.bookSql.BDD;
 import com.example.jordan.booklibrairy.bookSql.BookBDD;
 import com.squareup.picasso.Picasso;
@@ -79,13 +82,16 @@ public class Enregistrer extends AppCompatActivity
     String JsonIsbn = "";
     String auteur="";
 
-    Button bajouter ;
+
 
 
     // This string will hold the results
-    String titre = "";
-    String datepubli = "";
-    String resumeLivre = "";
+    String titre = " ";
+    String datepubli = " ";
+    String resumeLivre = " ";
+    String editeur=" ";
+    String genre= " ";
+    String commentaires=" ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +104,11 @@ public class Enregistrer extends AppCompatActivity
         final TextView textView_sorti = (TextView) findViewById(R.id.sortie);
         final TextView textView_resum = (TextView) findViewById(R.id.resume);
         final TextView textView_isbn = (TextView) findViewById(R.id.idisbn);
+        final TextView textView_editeur = (TextView) findViewById(R.id.editeur);
+        final TextView textView_genre = (TextView) findViewById(R.id.genres);
+        final TextView textView_commentaire = (TextView) findViewById(R.id.commentaires);
 
+        final ListAuteurs auteurs = new ListAuteurs();
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -120,6 +130,7 @@ public class Enregistrer extends AppCompatActivity
 
                             JSONArray array = new JSONArray(response.getString("items"));
                             String description="";
+                            String categorie="";
                             //the response JSON Object
                             //and converts them into javascript objects
                             //JSONObject bookjson = new JSONObject(array.getString(0));
@@ -129,17 +140,35 @@ public class Enregistrer extends AppCompatActivity
                                 if (!volumeInfo.isNull("description")){
                                     description = volumeInfo.getString("description");
                             }
+                            if (!volumeInfo.isNull("categories")){
+
+                                JSONArray allcate = volumeInfo.getJSONArray("categories");
+                                for (int j = 0; j < allcate.length(); j++) {
+                                    if(j!=0)
+                                        categorie = ","+  allcate.getString(j);
+
+                                    categorie =  allcate.getString(j);
+                                }
+                            }
+                            else{
+                                categorie="inconnue";
+                            }
                                 String title = volumeInfo.getString("title");
                                 String publishedDate = volumeInfo.getString("publishedDate");
-
+                                publishedDate=publishedDate.split("T")[0];
                                 JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
                             String srcImg = imageLinks.getString("thumbnail");
                                 titre = title;
                                 datepubli = publishedDate;
                                 resumeLivre = description;
+                                genre=categorie;
+                                editeur=volumeInfo.getString("publisher");
                                 JSONArray authors = volumeInfo.getJSONArray("authors");
                                 for (int j = 0; j < authors.length(); j++) {
-                                    auteur = " "+  authors.getString(j);
+                                    if(j!=0)
+                                        auteur = ","+  authors.getString(j);
+
+                                    auteur =  authors.getString(j);
                                 }
 
 
@@ -151,6 +180,8 @@ public class Enregistrer extends AppCompatActivity
                             textView_titre.setText(textView_titre.getText() + titre);
                             textView_sorti.setText(textView_sorti.getText() + datepubli);
                             textView_resum.setText(textView_resum.getText() + resumeLivre);
+                            textView_editeur.setText(textView_resum.getText() + editeur);
+                            textView_genre.setText(textView_genre.getText() + genre);
 
                             Picasso
                                     .with(getBaseContext())
@@ -216,22 +247,44 @@ public class Enregistrer extends AppCompatActivity
                 EditText editText_isbn = (EditText) findViewById(R.id.idisbn);
                 final String isbn = editText_isbn.getText().toString();
 
+                EditText editText_annee = (EditText) findViewById(R.id.sortie);
+                final String annee = editText_annee.getText().toString();
+
+                EditText editText_editeur = (EditText) findViewById(R.id.editeur);
+                final String edit = editText_editeur.getText().toString();
+
+                EditText editText_genre = (EditText) findViewById(R.id.genres);
+                final String genre = editText_genre.getText().toString();
+
+                EditText editText_com = (EditText) findViewById(R.id.commentaires);
+                final String com = editText_com.getText().toString();
+
                 if(!author.isEmpty() && !title.isEmpty() && !isbn.isEmpty()){
                     final BDD bdd=new BDD(getBaseContext());
-                    //Création d'une instance de ma classe LivresBDD
 
+                   String tabauteur[]=author.split(",");
 
-                    //Création d'un livre
-                    Book newbook=new Book(author,title,isbn,file.getAbsolutePath(),resume,);
+                    for(int i=0;i<tabauteur.length;i++){
+                        Auteur auteur= new Auteur(tabauteur[i],isbn);
+                        auteurs.add(auteur);
+                    }
+
+                    //Création d'un livre avec son ou ses auteurs
+                    Book newbook=new Book(title,isbn,file.getAbsolutePath(),resume,edit,annee,com,genre);
 
                     //On ouvre la base de données pour écrire dedans
                     bdd.open();
                     //On insère le livre que l'on vient de créer
-                    livreBdd.insertLivre(newbook);
+                    BookBDD bookbdd=new BookBDD(bdd.getDh());
+                    bookbdd.createBook(newbook);
+
+                    //On insère égalment le ou les auteurs du livre
+                    AuteurBDD auteurbdd=new AuteurBDD(bdd.getDh());
+                    auteurbdd.createAllAuthor(auteurs);
 
                     //Pour vérifier que l'on a bien créé notre livre dans la BDD
                     //on extrait le livre de la BDD grâce au titre du livre que l'on a créé précédemment1
-                    Book livreFromBdd = livreBdd.getLivreWithTitre(newbook.getTitle());
+                    Book livreFromBdd = bookbdd.getBookByIsbn(newbook.getIsbn());
                     //Si un livre est retourné (donc si le livre à bien été ajouté à la BDD)
                     if(livreFromBdd != null){
                         //On affiche les infos du livre dans un Toast
@@ -247,7 +300,7 @@ public class Enregistrer extends AppCompatActivity
                     //on supprime le livre de la BDD grâce à son ID
                     //livreBdd.removeLivreWithID(livreFromBdd.getId());
 
-                    livreBdd.close();
+                    bdd.close();
                 }
                 else {
                     Context context = getApplicationContext();

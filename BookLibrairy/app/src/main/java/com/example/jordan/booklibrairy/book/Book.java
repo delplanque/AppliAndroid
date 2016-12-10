@@ -22,7 +22,9 @@ public class Book {
     protected String annee;
     protected String commentaires;
 
+public Book(){
 
+}
 
     public Book(String title, String isbn, String srcImage, String resume, String editeur, String annee, String commentaires, String genre) {
         this.title=title;

@@ -19,4 +19,7 @@
     <string name="info">Appuyez sur le livre pour prendre en photo la couverture de votre livre.</string>
     <string name="nom_auteur">Auteur(s) :</string>
     <string name="resume">Resume :</string>
+    <string name="editeur">editeur :</string>
+    <string name="genre">Genre :</string>
+    <string name="commentaires">commentaires :</string>
 </resources>

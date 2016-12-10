@@ -23,7 +23,7 @@ public class create_book extends AppCompatActivity {
 
     }
     public void Createbook(View v){
-        //Button button=(Button) findViewById(R.id.createbook);
+     /*   //Button button=(Button) findViewById(R.id.createbook);
         EditText editText_author = (EditText) findViewById(R.id.edit_message_author);
         final String author = editText_author.getText().toString();
         EditText editText_title = (EditText) findViewById(R.id.edit_message_title);
@@ -72,7 +72,7 @@ public class create_book extends AppCompatActivity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
 
-        }
+        }*/
         }
 
 

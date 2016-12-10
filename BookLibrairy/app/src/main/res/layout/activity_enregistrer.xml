@@ -17,6 +17,17 @@
     android:background="@drawable/biblio"
     tools:context="com.example.jordan.booklibrairy.activity.MainActivity">
 
+    <ImageView
+
+        android:id="@+id/ivCouverture"
+        android:contentDescription="@string/couverture"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:scaleType="center"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/titre"
+        android:layout_toEndOf="@+id/titre" />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,6 +41,20 @@
         android:textColor="@color/colorblank"
         android:focusable="false"
  />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nom_auteur"
+        android:hint="@string/nom_auteur"
+        android:text=""
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/titre"
+        android:textColor="@color/colorblank"
+
+        android:focusable="false" />
+
 
     <EditText
         android:layout_width="wrap_content"
@@ -54,7 +79,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="20dp"
-        android:layout_below="@+id/titre"
+        android:layout_below="@+id/isbn"
         android:textColor="@color/colorblank"
         android:focusable="false"
   />
@@ -76,8 +101,8 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/nom_auteur"
-        android:hint="@string/nom_auteur"
+        android:id="@+id/editeur"
+        android:hint="@string/editeur"
         android:text=""
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -87,6 +112,34 @@
 
         android:focusable="false" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/genres"
+        android:hint="@string/genre"
+        android:text=""
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/editeur"
+        android:textColor="@color/colorblank"
+
+        android:focusable="false" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/commentaires"
+        android:hint="@string/commentaires"
+        android:text=""
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/genres"
+        android:textColor="@color/colorblank"
+/>
+
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,7 +148,7 @@
         android:layout_marginTop="108dp"
         android:layout_marginLeft="51dp"
         android:layout_marginStart="51dp"
-        android:layout_below="@+id/idisbn"
+        android:layout_below="@+id/commentaires"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -112,16 +165,7 @@
         android:layout_toEndOf="@+id/bajouter" />
 
 
-    <ImageView
 
-        android:id="@+id/ivCouverture"
-        android:contentDescription="@string/couverture"
-        android:layout_width="200dp"
-        android:layout_height="150dp"
-        android:scaleType="center"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/titre"
-        android:layout_toEndOf="@+id/titre" />
 
 
 </RelativeLayout>

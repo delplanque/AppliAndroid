@@ -22,6 +22,9 @@ import com.android.volley.*;
 import com.android.volley.toolbox.Volley;
 import com.example.jordan.booklibrairy.R;
 import com.example.jordan.booklibrairy.book.Book;
+import com.example.jordan.booklibrairy.book.ListAuteurs;
+import com.example.jordan.booklibrairy.bookSql.AuteurBDD;
+import com.example.jordan.booklibrairy.bookSql.BDD;
 import com.example.jordan.booklibrairy.bookSql.BookBDD;
 import com.example.jordan.booklibrairy.book.BookLibrary;
 import com.android.volley.RequestQueue;
@@ -126,29 +129,37 @@ public class MainActivity extends AppCompatActivity {
         bookList =(ListView) findViewById(R.id.booklist);
         books= new BookLibrary();
 
-        final BookBDD livreBdd = new BookBDD(this);
+        final BDD bdd = new BDD(this);
         //Création d'une instance de ma classe LivresBDD
 
 
 
         //On ouvre la base de données pour écrire dedans
-        livreBdd.open();
+        bdd.open();
+
+        BookBDD bookbdd=new BookBDD(bdd.getDh());
+
+        ArrayList<Book> allb=(ArrayList) bookbdd.getAllBook();
 
 
-
-        ArrayList<Book> allb=livreBdd.getAllBooks();
         for (Book b: allb) {
             books.saveBookInCollection(b);
         }
 
 
-        livreBdd.close();
+
+        bdd.close();
 
         List<Map<String, String>> listOfBook = new ArrayList<>();
         for(Book book :books.getlBooks()){
+
+            AuteurBDD auteurbdd=new AuteurBDD(bdd.getDh());
+            ListAuteurs listeAuteurs = auteurbdd.getAllAuthorByIsbn(book.getIsbn());
+            String res= listeAuteurs.toString();
+
             Map<String,String> bookMap=new HashMap<>();
             bookMap.put("img",String.valueOf(R.mipmap.ic_launcher));
-            bookMap.put("author",book.getAuthor());
+            bookMap.put("author",res);
             bookMap.put("title",book.getTitle());
             bookMap.put("isbn",book.getIsbn());
             listOfBook.add(bookMap);
@@ -195,14 +206,8 @@ public class MainActivity extends AppCompatActivity {
 
                 HashMap obj = (HashMap) bookList.getItemAtPosition(position);
                 Intent myIntent = new Intent(view.getContext(), detail_activity.class);
-                String aut = (String) obj.get("author");
                 String isbn = (String) obj.get("isbn");
-                String titre = (String) obj.get("title");
-                Book detailbook=new Book(aut,titre,isbn);
-                myIntent.putExtra("auteur",aut);
                 myIntent.putExtra("isbn",isbn);
-                myIntent.putExtra("titre",titre);
-                myIntent.putExtra("resume",detailbook.getResume());
 
 
                 startActivityForResult(myIntent, 0);
@@ -399,18 +404,31 @@ public class MainActivity extends AppCompatActivity {
         String name = search.getText().toString();
         // créer une nouvelle liste qui va contenir la résultat à afficher
 
+        final BDD bdd = new BDD(this);
+        //Création d'une instance de ma classe LivresBDD
+
+
+
+        //On ouvre la base de données pour écrire dedans
+        bdd.open();
+
         List<Map<String, String>> listOfBook = new ArrayList<>();
         for(Book book :books.getlBooks()){
             if (book.getTitle().toLowerCase().startsWith(name)) {
+
+                AuteurBDD auteurbdd=new AuteurBDD(bdd.getDh());
+                ListAuteurs listeAuteurs = auteurbdd.getAllAuthorByIsbn(book.getIsbn());
+                String res= listeAuteurs.toString();
+
                 Map<String, String> bookMap = new HashMap<>();
                 bookMap.put("img", String.valueOf(R.mipmap.ic_launcher));
-                bookMap.put("author", book.getAuthor());
+                bookMap.put("author", res);
                 bookMap.put("title", book.getTitle());
                 bookMap.put("isbn", book.getIsbn());
                 listOfBook.add(bookMap);
             }
         }
-
+        bdd.close();
         //vider la liste
         bookList.setAdapter(null);
         // ajouter la nouvelle liste

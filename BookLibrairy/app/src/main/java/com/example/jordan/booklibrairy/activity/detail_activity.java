@@ -12,6 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jordan.booklibrairy.R;
+import com.example.jordan.booklibrairy.book.Book;
+import com.example.jordan.booklibrairy.book.ListAuteurs;
+import com.example.jordan.booklibrairy.bookSql.AuteurBDD;
+import com.example.jordan.booklibrairy.bookSql.BDD;
+import com.example.jordan.booklibrairy.bookSql.BookBDD;
 
 public class detail_activity extends AppCompatActivity {
 
@@ -25,7 +30,8 @@ public class detail_activity extends AppCompatActivity {
         TextView textView_title = (TextView) findViewById(R.id.titledetail);
         TextView textView_isbn = (TextView) findViewById(R.id.isbndetail);
         TextView textView_resume= (TextView) findViewById(R.id.resumedetail);
-
+        Book bookdetail=new Book();
+        String res="";
         Bundle extras = getIntent().getExtras();
 
         String auteur ="";
@@ -36,16 +42,31 @@ public class detail_activity extends AppCompatActivity {
         if (extras != null) {
 
             //---------Récupère informations------------
-            auteur =extras.getString("auteur");
+
             isbn =extras.getString("isbn");
-            titre =extras.getString("titre");
-            resume =extras.getString("resume");
+
+            final BDD bdd = new BDD(this);
+            //Création d'une instance de ma classe LivresBDD
+
+
+
+            //On ouvre la base de données pour écrire dedans
+            bdd.open();
+
+            BookBDD bookbdd=new BookBDD(bdd.getDh());
+            bookdetail= bookbdd.getBookByIsbn(isbn);
+
+            AuteurBDD auteurbdd=new AuteurBDD(bdd.getDh());
+            ListAuteurs listeAuteurs = auteurbdd.getAllAuthorByIsbn(isbn);
+            res= listeAuteurs.toString();
+
+            bdd.close();
         }
         imag_detail_Book.setImageResource(R.mipmap.ic_launcher);
-        textView_author.setText(textView_author.getText() + auteur);
-        textView_title.setText(textView_title.getText() + titre);
+        textView_author.setText(textView_author.getText() + res);
+        textView_title.setText(textView_title.getText() +bookdetail.getTitle());
         textView_isbn.setText(textView_isbn.getText() + isbn);
-        textView_resume.setText(textView_resume.getText() + resume);
+        textView_resume.setText(textView_resume.getText() + bookdetail.getResume());
 
     }
 
