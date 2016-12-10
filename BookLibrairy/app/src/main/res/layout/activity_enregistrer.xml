@@ -17,16 +17,6 @@
     android:background="@drawable/biblio"
     tools:context="com.example.jordan.booklibrairy.activity.MainActivity">
 
-    <ImageView
-
-        android:id="@+id/ivCouverture"
-        android:contentDescription="@string/couverture"
-        android:layout_width="200dp"
-        android:layout_height="150dp"
-        android:scaleType="center"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/titre"
-        android:layout_toEndOf="@+id/titre" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -34,13 +24,23 @@
         android:id="@+id/titre"
         android:hint="@string/titre"
         android:text=""
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="20dp"
-        android:layout_below="@+id/ivCouverture"
         android:textColor="@color/colorblank"
         android:focusable="false"
- />
+        android:layout_alignBottom="@+id/ivCouverture"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sortie"
+        android:hint="@string/sorti"
+        android:text=""
+        android:textColor="@color/colorblank"
+        android:layout_below="@id/titre"
+        android:focusable="false"
+        />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,8 +49,7 @@
         android:text=""
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="20dp"
-        android:layout_below="@+id/titre"
+        android:layout_below="@+id/sortie"
         android:textColor="@color/colorblank"
 
         android:focusable="false" />
@@ -64,25 +63,10 @@
         android:text=""
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="20dp"
         android:layout_below="@+id/nom_auteur"
         android:textColor="@color/colorblank"
         android:focusable="false"
         />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sortie"
-        android:hint="@string/sorti"
-        android:text=""
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="20dp"
-        android:layout_below="@+id/isbn"
-        android:textColor="@color/colorblank"
-        android:focusable="false"
-  />
 
     <EditText
         android:layout_width="wrap_content"
@@ -92,25 +76,10 @@
         android:text=""
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="20dp"
-        android:layout_below="@+id/sortie"
+        android:layout_below="@+id/idisbn"
         android:textColor="@color/colorblank"
         android:focusable="false"
       />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editeur"
-        android:hint="@string/editeur"
-        android:text=""
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="20dp"
-        android:layout_below="@+id/resume"
-        android:textColor="@color/colorblank"
-
-        android:focusable="false" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -120,8 +89,7 @@
         android:text=""
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="20dp"
-        android:layout_below="@+id/editeur"
+        android:layout_below="@+id/resume"
         android:textColor="@color/colorblank"
 
         android:focusable="false" />
@@ -134,21 +102,26 @@
         android:text=""
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="20dp"
         android:layout_below="@+id/genres"
         android:textColor="@color/colorblank"
 />
 
-
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editeur"
+        android:hint="@string/editeur"
+        android:text=""
+        android:textColor="@color/colorblank"
+        android:layout_below="@+id/commentaires"
+        android:focusable="false"
+        />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/ajouter"
         android:id="@+id/bajouter"
-        android:layout_marginTop="108dp"
-        android:layout_marginLeft="51dp"
-        android:layout_marginStart="51dp"
-        android:layout_below="@+id/commentaires"
+        android:layout_below="@+id/editeur"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -158,8 +131,6 @@
         android:layout_height="wrap_content"
         android:text="@string/retour"
         android:id="@+id/button2"
-        android:layout_marginLeft="47dp"
-        android:layout_marginStart="47dp"
         android:layout_alignTop="@+id/bajouter"
         android:layout_toRightOf="@+id/bajouter"
         android:layout_toEndOf="@+id/bajouter" />
@@ -168,5 +139,15 @@
 
 
 
+    <ImageView
+
+        android:id="@+id/ivCouverture"
+        android:contentDescription="@string/couverture"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:scaleType="center"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/titre"
+        android:layout_toEndOf="@+id/titre" />
 </RelativeLayout>
 </ScrollView>

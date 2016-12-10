@@ -5,6 +5,7 @@ package com.example.jordan.booklibrairy.activity;
  */
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -213,20 +215,35 @@ public class Enregistrer extends AppCompatActivity
         // Adds the JSON object request "obreq" to the request queue
         requestQueue.add(obreq);
 
-        final ImageView image =(ImageView)findViewById(R.id.ivCouverture);
         final Button add=(Button) findViewById(R.id.bajouter);
         add.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                image.setDrawingCacheEnabled(true);
+                final ImageView im =(ImageView)findViewById(R.id.ivCouverture);
+
+
+                v.setDrawingCacheEnabled(true);
+
+// this is the important code :)
+// Without it the view will have a dimension of 0,0 and the bitmap will be null
+                v.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+
+                v.buildDrawingCache(true);
+                Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
+                v.setDrawingCacheEnabled(false); // clear drawing cache
+/*
                 Bitmap bmp =Bitmap.createBitmap(image.getDrawingCache());
-                image.setDrawingCacheEnabled(false);
+                image.setDrawingCacheEnabled(false);*/
+
                 String nomfichier= titre.replace(' ','_');
-                File file = new File(path,nomfichier +".png");
+               String dirImage= saveToInternalStorage(b,nomfichier);
+               /* File file = new File(path,nomfichier +".png");
                 try {
                     fOut = new FileOutputStream(file);
-                    bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+                    bmap.compress(Bitmap.CompressFormat.PNG, 90, out);
                 }catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -234,7 +251,7 @@ public class Enregistrer extends AppCompatActivity
                         out.close();
                     } catch(Throwable ignore) {}
                 }
-
+*/
                 EditText editText_author = (EditText) findViewById(R.id.nom_auteur);
                 final String author = editText_author.getText().toString();
 
@@ -270,7 +287,7 @@ public class Enregistrer extends AppCompatActivity
                     }
 
                     //Création d'un livre avec son ou ses auteurs
-                    Book newbook=new Book(title,isbn,file.getAbsolutePath(),resume,edit,annee,com,genre);
+                    Book newbook=new Book(title,isbn,dirImage,resume,edit,annee,com,genre);
 
                     //On ouvre la base de données pour écrire dedans
                     bdd.open();
@@ -317,6 +334,30 @@ public class Enregistrer extends AppCompatActivity
 
 
 
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage,String nomfichier){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,nomfichier+".png");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
     }
 
 

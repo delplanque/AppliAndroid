@@ -36,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Table names
     private static final String TABLE_LIVRE = "table_livre";
-    private static final String TABLE_AUTEUR = "tableauteur";
+    private static final String TABLE_AUTEUR = "table_auteur";
 
     // Common column names
 
@@ -78,7 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     +    COL_NAME + " TEXT NOT NULL, "
                     +    COL_ISBN + " TEXT NOT NULL, "
                     +   "FOREIGN KEY (isbn) "
-                    +       "REFERENCES livre(isbn) "
+                    +       "REFERENCES table_livre(isbn) "
                     +       "ON DELETE CASCADE "
                     +       "ON UPDATE CASCADE "
                     +   ", "
