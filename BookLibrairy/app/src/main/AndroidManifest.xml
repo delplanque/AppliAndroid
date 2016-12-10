@@ -14,18 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity"
-
-            android:theme="@style/AppTheme.NoActionBar">>
+        <activity android:name=".activity.MainActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".detail_activity" />
-        <activity android:name=".create_book" />
-        <activity android:name=".Enregistrer" />
+
+        <activity android:name=".activity.detail_activity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            />
+        <activity android:name=".activity.create_book"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            />
+        <activity android:name=".activity.Enregistrer"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            />
     </application>
 
 </manifest>

@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="fill_parent"
+
+    android:layout_height="wrap_content">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,13 +15,14 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/biblio"
-    tools:context="com.example.jordan.booklibrairy.MainActivity">
+    tools:context="com.example.jordan.booklibrairy.activity.MainActivity">
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/titre"
-        android:text="@string/titre"
+        android:hint="@string/titre"
+        android:text=""
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="20dp"
@@ -27,7 +35,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/idisbn"
-        android:text="@string/edit_message_isbn"
+        android:hint="@string/edit_message_isbn"
+        android:text=""
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="20dp"
@@ -40,7 +49,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/sortie"
-        android:text="@string/sorti"
+        android:hint="@string/sorti"
+        android:text=""
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="20dp"
@@ -53,7 +63,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/resume"
-        android:text="@string/resume"
+        android:hint="@string/resume"
+        android:text=""
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="20dp"
@@ -66,7 +77,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/nom_auteur"
-        android:text="@string/nom_auteur"
+        android:hint="@string/nom_auteur"
+        android:text=""
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="20dp"
@@ -107,11 +119,10 @@
         android:layout_width="200dp"
         android:layout_height="150dp"
         android:scaleType="center"
-        android:clickable="true"
-        android:onClick="onClickAjoutCouverture"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/titre"
         android:layout_toEndOf="@+id/titre" />
 
 
 </RelativeLayout>
+</ScrollView>
