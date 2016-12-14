@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,7 +13,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:background="@drawable/biblio"
     tools:context="com.example.jordan.booklibrairy.activity.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:focusable="true" android:focusableInTouchMode="true">
 
 
     <LinearLayout
@@ -64,8 +64,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textColor="@color/colorblank"
+            android:textColorHint="@color/colorblank"
             android:hint="Recherche ..."
-            android:textColor="@color/colorblank"/>
+            android:background="@color/black"
+            />
 
 
         <ListView

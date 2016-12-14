@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".activity.MainActivity"
+
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,12 +26,20 @@
         </activity>
 
         <activity android:name=".activity.detail_activity"
+            android:noHistory = "true"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             />
         <activity android:name=".activity.create_book"
+            android:noHistory = "true"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             />
         <activity android:name=".activity.Enregistrer"
+            android:noHistory = "true"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            />
+
+        <activity android:name=".activity.Modifbook_activity"
+            android:noHistory = "true"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             />
     </application>

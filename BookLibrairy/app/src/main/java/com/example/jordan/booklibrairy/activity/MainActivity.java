@@ -160,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
 
                 startActivityForResult(myIntent, 0);
 
+                finish();
+
             }
         });
 
@@ -170,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent=new Intent(this,create_book.class);
         //on lance l'intent, cela a pour effet de stoper l'activité courante et lancer une autre activite ici SecondActivite
         startActivity(intent);
-
+        finish();
 
     }
 
@@ -262,9 +264,13 @@ public class MainActivity extends AppCompatActivity {
                 boolean present=false;
                 BookBDD bookbdd=new BookBDD(bdd.getDh());
 
+                //On recuperer tout les livres de la base de données
                 ArrayList<Book> allb=(ArrayList) bookbdd.getAllBook();
 
-
+                /*On verifie pour tout les livres de la liste si l'isbn scanner correspond
+                * a un des isbn de la liste et
+                * on passe le booleen present a true si on en trouve un
+                */
                 for (Book b: allb) {
 
                     if(b.getIsbn().compareToIgnoreCase(isbn)==0){
@@ -276,6 +282,12 @@ public class MainActivity extends AppCompatActivity {
 
 
                 bdd.close();
+                /*
+                *On verifie que le llivre n'est pas déjà présent dans la bibliotheque
+                * Si il n'est pas présent on continue alors sur la view suivante
+                * qui va permettre d'ajouter le livre
+                * Sinon on retourne sur l'acceuil
+                */
                 if(present == true){
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Ce livre est déjà présent dans votre bibliotheque", Toast.LENGTH_LONG);
@@ -286,26 +298,18 @@ public class MainActivity extends AppCompatActivity {
                             "Code Ok", Toast.LENGTH_SHORT);
                     toast.show();
 
-                    // GestionLivre gl = new GestionLivre(this);
-                    //  trouvaille = ;
                     Intent intention;
                     Toast toast1;
-                    //  if(trouvaille != null)
-                    //  {
-                    //      intention = new Intent(this, AfficherLivre.class);
-                    //      intention.putExtra("livre", trouvaille);
-                    //      toast1 = Toast.makeText(this, "Ce livre est déjà dans votre bibliothèque.", Toast.LENGTH_LONG);
-                    //      toast1.show();
-                    //  }
-                    //  else {
+
                     intention = new Intent(this, Enregistrer.class);
                     intention.putExtra("isbn", isbn);
                     toast1 = Toast.makeText(this, "Ce livre n'est pas dans votre bibliothèque, enregistrez le !", Toast.LENGTH_LONG);
                     toast1.show();
 
-                    //  }
 
                     startActivity(intention);
+
+                    finish();
                 }
 
 

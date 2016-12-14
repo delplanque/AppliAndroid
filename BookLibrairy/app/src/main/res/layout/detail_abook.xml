@@ -13,12 +13,27 @@
     android:orientation="vertical"
     android:gravity="center">
 
+    <Button
+        android:text="Supprimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/SupprBook"
+        android:layout_gravity="right" />
+
+    <Button
+        android:text="Modifier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ModifBook"
+        android:elevation="0dp"
+        android:layout_gravity="right" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="15dp"
         android:paddingTop="@dimen/layout_padding_top" >
+
 
         <ImageView
             android:id="@+id/imgdetail"
@@ -54,8 +69,40 @@
             />
 
         <TextView
+            android:id="@+id/editdetail"
+            android:text="Editeur : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorblank"
+            />
+
+        <TextView
             android:id="@+id/resumedetail"
             android:text="Resume : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorblank"
+            />
+
+        <TextView
+            android:id="@+id/genredetail"
+            android:text="Genre : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorblank"
+            />
+
+        <TextView
+            android:id="@+id/sortiedetail"
+            android:text="Sortie : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorblank"
+            />
+
+        <TextView
+            android:id="@+id/comdetail"
+            android:text="Commentaires : "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorblank"

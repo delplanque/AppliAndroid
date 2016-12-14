@@ -41,6 +41,14 @@
             android:background="@android:color/background_light"
             android:layout_marginRight="5dp"
             />
+
+        <EditText android:id="@+id/edit_message_sortie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Annee :"
+            android:background="@android:color/background_light"
+            android:layout_marginRight="5dp"
+            />
         <Button
             android:id="@+id/createbook"
             android:layout_width="wrap_content"
@@ -49,13 +57,6 @@
             android:onClick="Createbook"
             />
 
-        <Button
-            android:layout_marginTop="80dp"
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Retour"
-            android:onClick="Back" />
 
     </LinearLayout>
 </LinearLayout>

@@ -316,6 +316,10 @@ public class Enregistrer extends AppCompatActivity
                     //livreBdd.removeLivreWithID(livreFromBdd.getId());
 
                     bdd.close();
+
+                    Intent intent = new Intent(Enregistrer.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
                 else {
                     Context context = getApplicationContext();
@@ -332,6 +336,12 @@ public class Enregistrer extends AppCompatActivity
 
 
 
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Enregistrer.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private String saveToInternalStorage(Bitmap bitmapImage,String nomfichier){

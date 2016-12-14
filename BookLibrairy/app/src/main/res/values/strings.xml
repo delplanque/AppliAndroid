@@ -22,4 +22,5 @@
     <string name="editeur">editeur :</string>
     <string name="genre">Genre :</string>
     <string name="commentaires">commentaires :</string>
+    <string name="Supression">Voulez supprimer ce livre?</string>
 </resources>
