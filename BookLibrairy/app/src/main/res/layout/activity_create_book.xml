@@ -45,6 +45,7 @@
         <EditText android:id="@+id/edit_message_sortie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:hint="Annee :"
             android:background="@android:color/background_light"
             android:layout_marginRight="5dp"
