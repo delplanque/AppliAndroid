@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -129,37 +130,38 @@ public class Enregistrer extends AppCompatActivity
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-
-                            JSONArray array = new JSONArray(response.getString("items"));
-                            String description="";
-                            String categorie="";
-                            //the response JSON Object
-                            //and converts them into javascript objects
-                            //JSONObject bookjson = new JSONObject(array.getString(0));
-                            //JSONArray volumeinfo = new JSONArray(bookjson.getString("kind"));
+                            int nbitems = response.getInt("totalItems");
+                            if(nbitems!=0){
+                                JSONArray array = new JSONArray(response.getString("items"));
+                                String description="";
+                                String categorie="";
+                                //the response JSON Object
+                                //and converts them into javascript objects
+                                //JSONObject bookjson = new JSONObject(array.getString(0));
+                                //JSONArray volumeinfo = new JSONArray(bookjson.getString("kind"));
 
                                 JSONObject volumeInfo = array.getJSONObject(0).getJSONObject("volumeInfo");
                                 if (!volumeInfo.isNull("description")){
                                     description = volumeInfo.getString("description");
-                            }
-                            if (!volumeInfo.isNull("categories")){
-
-                                JSONArray allcate = volumeInfo.getJSONArray("categories");
-                                for (int j = 0; j < allcate.length(); j++) {
-                                    if(j!=0)
-                                        categorie = ","+  allcate.getString(j);
-
-                                    categorie =  allcate.getString(j);
                                 }
-                            }
-                            else{
-                                categorie="inconnue";
-                            }
+                                if (!volumeInfo.isNull("categories")){
+
+                                    JSONArray allcate = volumeInfo.getJSONArray("categories");
+                                    for (int j = 0; j < allcate.length(); j++) {
+                                        if(j!=0)
+                                            categorie = ","+  allcate.getString(j);
+
+                                        categorie =  allcate.getString(j);
+                                    }
+                                }
+                                else{
+                                    categorie="inconnue";
+                                }
                                 String title = volumeInfo.getString("title");
                                 String publishedDate = volumeInfo.getString("publishedDate");
                                 publishedDate=publishedDate.split("T")[0];
                                 JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-                            String srcImg = imageLinks.getString("thumbnail");
+                                String srcImg = imageLinks.getString("thumbnail");
                                 titre = title;
                                 datepubli = publishedDate;
                                 resumeLivre = description;
@@ -174,25 +176,20 @@ public class Enregistrer extends AppCompatActivity
                                 }
 
 
+                                textView_auteur.setText(textView_auteur.getText() + auteur);
+                                textView_titre.setText(textView_titre.getText() + titre);
+                                textView_sorti.setText(textView_sorti.getText() + datepubli);
+                                textView_resum.setText(textView_resum.getText() + resumeLivre);
+                                textView_editeur.setText(textView_resum.getText() + editeur);
+                                textView_genre.setText(textView_genre.getText() + genre);
 
+                                Picasso
+                                        .with(getBaseContext())
+                                        .load(srcImg)
+                                        .resize(500, 450)
+                                        .into(imageView);
 
-
-
-                            textView_auteur.setText(textView_auteur.getText() + auteur);
-                            textView_titre.setText(textView_titre.getText() + titre);
-                            textView_sorti.setText(textView_sorti.getText() + datepubli);
-                            textView_resum.setText(textView_resum.getText() + resumeLivre);
-                            textView_editeur.setText(textView_resum.getText() + editeur);
-                            textView_genre.setText(textView_genre.getText() + genre);
-
-                            Picasso
-                                    .with(getBaseContext())
-                                    .load(srcImg)
-                                    .resize(500, 450)
-                                    .into(imageView);
-
-
-
+                            }
 
                         }
                         // Try and catch are included to handle any errors due to JSON
@@ -222,23 +219,24 @@ public class Enregistrer extends AppCompatActivity
             public void onClick(View v) {
                 final ImageView im =(ImageView)findViewById(R.id.ivCouverture);
 
-
-                v.setDrawingCacheEnabled(true);
+                im.buildDrawingCache();
+                im.setDrawingCacheEnabled(true);
 
 // this is the important code :)
 // Without it the view will have a dimension of 0,0 and the bitmap will be null
-                v.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+               /* im.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                         View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-                v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+                im.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());*/
 
-                v.buildDrawingCache(true);
-                Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
-                v.setDrawingCacheEnabled(false); // clear drawing cache
+                im.buildDrawingCache(true);
+                BitmapDrawable drawable = (BitmapDrawable) im.getDrawable();
+                Bitmap b = drawable.getBitmap();
+                im.setDrawingCacheEnabled(false); // clear drawing cache
 /*
                 Bitmap bmp =Bitmap.createBitmap(image.getDrawingCache());
                 image.setDrawingCacheEnabled(false);*/
 
-                String nomfichier= titre.replace(' ','_');
+                String nomfichier= titre.replaceAll(" ","_");
                String dirImage= saveToInternalStorage(b,nomfichier);
                /* File file = new File(path,nomfichier +".png");
                 try {
@@ -321,7 +319,7 @@ public class Enregistrer extends AppCompatActivity
                 }
                 else {
                     Context context = getApplicationContext();
-                    CharSequence text = "Un des champs n'a pas été rempli!";
+                    CharSequence text = "ERREUR!";
                     int duration = Toast.LENGTH_LONG;
 
                     Toast toast = Toast.makeText(context, text, duration);

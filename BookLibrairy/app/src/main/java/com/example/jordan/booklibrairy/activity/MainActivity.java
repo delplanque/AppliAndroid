@@ -1,8 +1,11 @@
 package com.example.jordan.booklibrairy.activity;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -29,6 +33,7 @@ import com.example.jordan.booklibrairy.bookSql.BookBDD;
 import com.example.jordan.booklibrairy.book.BookLibrary;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.*;
+import com.example.jordan.booklibrairy.utils.MyViewBinder;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -36,17 +41,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    String JsonIsbn = "9783161484100";
 
-    String JsonURL = "https://www.googleapis.com/books/v1/volumes?q=isbn:"+JsonIsbn;
     // This string will hold the results
     String data = "";
     // Defining the Volley request queue that handles the URL request concurrently
@@ -62,66 +69,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-        requestQueue = Volley.newRequestQueue(this);
-
-        // Creating the JsonObjectRequest class called obreq, passing required parameters:
-        //GET is used to fetch data from the server, JsonURL is the URL to be fetched from.
-        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET, JsonURL,
-                // The third parameter Listener overrides the method onResponse() and passes
-                //JSONObject as a parameter
-                new Response.Listener<JSONObject>() {
-
-                    // Takes the response from the JSON request
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-
-                           JSONArray array = new JSONArray(response.getString("items"));
-                            //the response JSON Object
-                            //and converts them into javascript objects
-                            //JSONObject bookjson = new JSONObject(array.getString(0));
-                            //JSONArray volumeinfo = new JSONArray(bookjson.getString("kind"));
-                           for(int i=0;i<array.length();i++){
-                               JSONObject volumeInfo = array.getJSONObject(i).getJSONObject("volumeInfo");
-                               String title = volumeInfo.getString("title");
-                                data=title;
-                               JSONArray authors = volumeInfo.getJSONArray("authors");
-                               for(int j =0; j< authors.length(); j++){
-                                   String author = authors.getString(i);
-                               }
-                           }
-
-                            Context context = getApplicationContext();
-                            CharSequence text = data;
-                            int duration = Toast.LENGTH_SHORT;
-
-                            Toast toast = Toast.makeText(context, text, duration);
-                            toast.show();
-
-
-
-                        }
-                        // Try and catch are included to handle any errors due to JSON
-                        catch (JSONException e) {
-                            // If an error occurs, this prints the error to the log
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                // The final parameter overrides the method onErrorResponse() and passes VolleyError
-                //as a parameter
-                new Response.ErrorListener() {
-                    @Override
-                    // Handles errors that occur due to Volley
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Volley", "Error");
-                    }
-                }
-        );
-        // Adds the JSON object request "obreq" to the request queue
-        requestQueue.add(obreq);
 
 
 
@@ -150,15 +97,16 @@ public class MainActivity extends AppCompatActivity {
 
         bdd.close();
 
-        List<Map<String, String>> listOfBook = new ArrayList<>();
+        List<Map<String, Object>> listOfBook = new ArrayList<>();
         for(Book book :books.getlBooks()){
-
+            String nomfichier= (book.getTitle()).replaceAll(" ","_");
             AuteurBDD auteurbdd=new AuteurBDD(bdd.getDh());
             ListAuteurs listeAuteurs = auteurbdd.getAllAuthorByIsbn(book.getIsbn());
             String res= listeAuteurs.toString();
+            Bitmap image=loadImageFromStorage(book.getSrcImage(),nomfichier);
 
-            Map<String,String> bookMap=new HashMap<>();
-            bookMap.put("img",String.valueOf(R.mipmap.ic_launcher));
+            Map<String,Object> bookMap=new HashMap<>();
+            bookMap.put("img",image);
             bookMap.put("author",res);
             bookMap.put("title",book.getTitle());
             bookMap.put("isbn",book.getIsbn());
@@ -173,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 listItemsValue,
                 new int[] {R.id.img,R.id.author,R.id.title,R.id.isbn});
         bookList.setAdapter(listAdapter);
-
+        listAdapter.setViewBinder(new MyViewBinder());
         search.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -226,71 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void jsonRequestBook(){
-        requestQueue = Volley.newRequestQueue(this);
 
-        // Creating the JsonObjectRequest class called obreq, passing required parameters:
-        //GET is used to fetch data from the server, JsonURL is the URL to be fetched from.
-        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET, JsonURL,
-                // The third parameter Listener overrides the method onResponse() and passes
-                //JSONObject as a parameter
-                new Response.Listener<JSONObject>() {
-
-                    // Takes the response from the JSON request
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-
-                            JSONArray array = new JSONArray(response.getString("items"));
-                            //the response JSON Object
-                            //and converts them into javascript objects
-                            //JSONObject bookjson = new JSONObject(array.getString(0));
-                            //JSONArray volumeinfo = new JSONArray(bookjson.getString("kind"));
-                            for(int i=0;i<array.length();i++){
-                                JSONObject volumeInfo = array.getJSONObject(i).getJSONObject("volumeInfo");
-                                String title = volumeInfo.getString("title");
-                                data=title;
-                                JSONArray authors = volumeInfo.getJSONArray("authors");
-                                for(int j =0; j< authors.length(); j++){
-                                    String author = authors.getString(i);
-                                }
-                            }
-
-                        /*    for (int i = 0; i < volumeinfo.length(); i++) {
-                                array.getString(i);
-                                // On récupère un objet JSON du tableau
-                                JSONObject infobook = new JSONObject(array.getString(i));
-
-                                // Adds strings from object to the "data" string
-                                data += "tile : " + infobook.getString("title") +
-                                        "subtitle : " + infobook.getString("subtitle");
-
-
-                            }*/
-
-
-                        }
-                        // Try and catch are included to handle any errors due to JSON
-                        catch (JSONException e) {
-                            // If an error occurs, this prints the error to the log
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                // The final parameter overrides the method onErrorResponse() and passes VolleyError
-                //as a parameter
-                new Response.ErrorListener() {
-                    @Override
-                    // Handles errors that occur due to Volley
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Volley", "Error");
-                    }
-                }
-        );
-        // Adds the JSON object request "obreq" to the request queue
-        requestQueue.add(obreq);
-
-    }
 
 
 
@@ -341,62 +225,95 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
-        String isbn = "";
-        String type = "";
-        String prefix ="";
-        if (scanningResult != null) {
-            isbn = scanningResult.getContents().toLowerCase();
-            type = scanningResult.getFormatName().toLowerCase();
-            prefix = isbn.substring(0, 3);
+        if (resultCode == Activity.RESULT_OK) {
+
+            IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+            String isbn = "";
+            String type = "";
+            String prefix ="";
+            if (scanningResult != null) {
+
+                isbn = scanningResult.getContents().toLowerCase();
+                type = scanningResult.getFormatName().toLowerCase();
+                prefix = isbn.substring(0, 3);
+            } else {
+                Log.e("SEARCH_EAN", "IntentResult  NULL!");
+            }
+            if(!type.equals("ean_13"))
+            {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Mauvais format", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
+            if(!(prefix.equals("977") || prefix.equals("978") || prefix.equals("979")))
+            {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "C'est n'est pas un livre !", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
+            else
+            {
+                final BDD bdd = new BDD(this);
+                //On ouvre la base de données pour écrire dedans
+                bdd.open();
+                boolean present=false;
+                BookBDD bookbdd=new BookBDD(bdd.getDh());
+
+                ArrayList<Book> allb=(ArrayList) bookbdd.getAllBook();
+
+
+                for (Book b: allb) {
+
+                    if(b.getIsbn().compareToIgnoreCase(isbn)==0){
+                        present=true;
+
+                    }
+                }
+
+
+
+                bdd.close();
+                if(present == true){
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Ce livre est déjà présent dans votre bibliotheque", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else{
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Code Ok", Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    // GestionLivre gl = new GestionLivre(this);
+                    //  trouvaille = ;
+                    Intent intention;
+                    Toast toast1;
+                    //  if(trouvaille != null)
+                    //  {
+                    //      intention = new Intent(this, AfficherLivre.class);
+                    //      intention.putExtra("livre", trouvaille);
+                    //      toast1 = Toast.makeText(this, "Ce livre est déjà dans votre bibliothèque.", Toast.LENGTH_LONG);
+                    //      toast1.show();
+                    //  }
+                    //  else {
+                    intention = new Intent(this, Enregistrer.class);
+                    intention.putExtra("isbn", isbn);
+                    toast1 = Toast.makeText(this, "Ce livre n'est pas dans votre bibliothèque, enregistrez le !", Toast.LENGTH_LONG);
+                    toast1.show();
+
+                    //  }
+
+                    startActivity(intention);
+                }
+
+
+            }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            Log.e("SEARCH_EAN", "CANCEL");
         }
-        else{
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Aucunes données scannées", Toast.LENGTH_SHORT);
-            toast.show();
-        }
 
-        if(!type.equals("ean_13"))
-        {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Mauvais format", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-
-        if(!(prefix.equals("977") || prefix.equals("978") || prefix.equals("979")))
-        {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "C'est n'est pas un livre !", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        else
-        {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Code Ok", Toast.LENGTH_SHORT);
-            toast.show();
-
-           // GestionLivre gl = new GestionLivre(this);
-           //  trouvaille = ;
-            Intent intention;
-            Toast toast1;
-          //  if(trouvaille != null)
-          //  {
-          //      intention = new Intent(this, AfficherLivre.class);
-          //      intention.putExtra("livre", trouvaille);
-          //      toast1 = Toast.makeText(this, "Ce livre est déjà dans votre bibliothèque.", Toast.LENGTH_LONG);
-          //      toast1.show();
-          //  }
-          //  else {
-                intention = new Intent(this, Enregistrer.class);
-                intention.putExtra("isbn", isbn);
-                toast1 = Toast.makeText(this, "Ce livre n'est pas dans votre bibliothèque, enregistrez le !", Toast.LENGTH_LONG);
-                toast1.show();
-
-          //  }
-
-            startActivity(intention);
-        }
     }
 
     public void filtrer() {
@@ -412,16 +329,16 @@ public class MainActivity extends AppCompatActivity {
         //On ouvre la base de données pour écrire dedans
         bdd.open();
 
-        List<Map<String, String>> listOfBook = new ArrayList<>();
+        List<Map<String, Object>> listOfBook = new ArrayList<>();
         for(Book book :books.getlBooks()){
             if (book.getTitle().toLowerCase().startsWith(name)) {
-
+                String nomfichier= (book.getTitle()).replaceAll(" ","_");
                 AuteurBDD auteurbdd=new AuteurBDD(bdd.getDh());
                 ListAuteurs listeAuteurs = auteurbdd.getAllAuthorByIsbn(book.getIsbn());
                 String res= listeAuteurs.toString();
-
-                Map<String, String> bookMap = new HashMap<>();
-                bookMap.put("img", String.valueOf(R.mipmap.ic_launcher));
+                Bitmap image=loadImageFromStorage(book.getSrcImage(),nomfichier);
+                Map<String, Object> bookMap = new HashMap<>();
+                bookMap.put("img", image);
                 bookMap.put("author", res);
                 bookMap.put("title", book.getTitle());
                 bookMap.put("isbn", book.getIsbn());
@@ -435,6 +352,23 @@ public class MainActivity extends AppCompatActivity {
         SimpleAdapter listAdapter=new SimpleAdapter(this.getBaseContext(),listOfBook,R.layout.book_detail,
                 listItemsValue,
                 new int[] {R.id.img,R.id.author,R.id.title,R.id.isbn});
+        listAdapter.setViewBinder(new MyViewBinder());
         bookList.setAdapter(listAdapter);
     }
+
+    private Bitmap loadImageFromStorage(String path,String nomfichier)
+    {
+        Bitmap b=null;
+        try {
+            File f=new File(path, nomfichier+".png");
+             b = BitmapFactory.decodeStream(new FileInputStream(f));
+
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+    return b;
+    }
+
 }
