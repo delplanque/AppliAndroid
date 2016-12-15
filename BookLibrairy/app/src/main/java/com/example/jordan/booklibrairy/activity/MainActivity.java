@@ -348,6 +348,20 @@ public class MainActivity extends AppCompatActivity {
                 bookMap.put("isbn", book.getIsbn());
                 listOfBook.add(bookMap);
             }
+            else if(book.getIsbn().toLowerCase().startsWith(name)){
+                String nomfichier= (book.getTitle()).replaceAll(" ","_");
+                AuteurBDD auteurbdd=new AuteurBDD(bdd.getDh());
+                ListAuteurs listeAuteurs = auteurbdd.getAllAuthorByIsbn(book.getIsbn());
+                String res= listeAuteurs.toString();
+                Bitmap image=loadImageFromStorage(book.getSrcImage(),nomfichier);
+                Map<String, Object> bookMap = new HashMap<>();
+                bookMap.put("img", image);
+                bookMap.put("author", res);
+                bookMap.put("title", book.getTitle());
+                bookMap.put("isbn", book.getIsbn());
+                listOfBook.add(bookMap);
+
+            }
         }
         bdd.close();
         //vider la liste

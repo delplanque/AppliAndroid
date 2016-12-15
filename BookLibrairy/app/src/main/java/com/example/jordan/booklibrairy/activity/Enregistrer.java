@@ -180,7 +180,7 @@ public class Enregistrer extends AppCompatActivity
                                 textView_titre.setText(textView_titre.getText() + titre);
                                 textView_sorti.setText(textView_sorti.getText() + datepubli);
                                 textView_resum.setText(textView_resum.getText() + resumeLivre);
-                                textView_editeur.setText(textView_resum.getText() + editeur);
+                                textView_editeur.setText(textView_editeur.getText() + editeur);
                                 textView_genre.setText(textView_genre.getText() + genre);
 
                                 Picasso
